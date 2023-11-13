@@ -1,14 +1,10 @@
 <?php
 class Database {
-    // private $host = "localhost";
-    // private $db_name = "inventaire";
-    // private $username = "root";
-    // private $password = "";
+     private $host = "localhost";
+    /private $db_name = "inventaire";
+     private $username = "root";
+     private $password = "";
 
-    private $host = "145.14.153.151";
-    private $db_name = "u801021231_inventaire";
-    private $username = "u801021231_inventaire";
-    private $password = "Rootnws21";
     public $conn;
 
     public function getConnection() {
