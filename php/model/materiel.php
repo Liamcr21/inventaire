@@ -112,5 +112,15 @@ class Materiel {
         return isset($row['nombre_prets']) ? $row['nombre_prets'] : 0;
     }
     
+    function getMaterielNameById($materiel_id) {
+        $query = "SELECT nom FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $materiel_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row['nom'];
+    }
 }
 ?>

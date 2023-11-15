@@ -17,17 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emprunt->date_fin = $_POST['date_fin'];
 
     if ($emprunt->createAndUpdateMateriel()) {
-        echo "L'emprunt a été créé avec succès et la quantité de matériel a été mise à jour.";
-
-        header("Location: list.php");
+        header("Location: ../php/traitement/mail2.php?id=={$emprunt->id}");
         exit();
     } else {
         echo "L'emprunt a été créé avec succès et la quantité de matériel a été mise à jour.";
-        header("Location: list.php");
+        header("Location: ../php/traitement/mail2.php?id=={$emprunt->id}");
         exit();
     }
 }
 ?>
+
 
 
 

@@ -93,6 +93,16 @@ class User {
         return false;
     }
 
+    function getUserNameById($user_id) {
+        $query = "SELECT nom FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $user_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row['nom'];
+    }
 
 }
 ?>

@@ -38,14 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     }
 
     $message = "Bonjour $nomUtilisateur,\n\n";
-    $message .= "Vous avez un emprunt en cours avec les détails suivants :\n\n";
+    $message .= "Confirmation emprunt en cours avec les détails suivants :\n\n";
     $message .= "Nom du matériel: $nomMateriel\n";
     $message .= "Date de début: {$emprunt->date_debut}\n";
     $message .= "Date de fin: {$emprunt->date_fin}\n\n";
     $message .= "Cordialement,\nNWS";
 
     // Envoyez l'e-mail
-    $subject = "Détails de l'emprunt en cours";
+    $subject = "Confirmation emprunt en cours";
     $headers = "From: inventaire@nws.fr"; 
 
     if (mail($to, $subject, $message, $headers)) {
