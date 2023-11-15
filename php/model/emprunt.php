@@ -14,6 +14,27 @@ class Emprunt {
         $this->conn = $db;
     }
 
+
+    function create() {
+        $query = "INSERT INTO " . $this->table_name . " SET user_id=:user_id, materiel_id=:materiel_id, date_debut=:date_debut, date_fin=:date_fin";
+        $stmt = $this->conn->prepare($query);
+
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $this->materiel_id = htmlspecialchars(strip_tags($this->materiel_id));
+        $this->date_debut = htmlspecialchars(strip_tags($this->date_debut));
+        $this->date_fin = htmlspecialchars(strip_tags($this->date_fin));
+
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->bindParam(":materiel_id", $this->materiel_id);
+        $stmt->bindParam(":date_debut", $this->date_debut);
+        $stmt->bindParam(":date_fin", $this->date_fin);
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
 function createAndUpdateMateriel() {
     try {
         $this->conn->beginTransaction();
@@ -42,8 +63,6 @@ function createAndUpdateMateriel() {
                 return false;
             }
 
-            $this->sendConfirmationEmail();
-
             $this->conn->commit();
             return true;
         } else {
@@ -70,24 +89,7 @@ private function isMaterielAvailable() {
 }
 
 
-private function sendConfirmationEmail() {
-    $userEmailQuery = "SELECT email FROM users WHERE id = :user_id";
-    $userEmailStmt = $this->conn->prepare($userEmailQuery);
-    $userEmailStmt->bindParam(":user_id", $this->user_id);
-    $userEmailStmt->execute();
-    $userEmailRow = $userEmailStmt->fetch(PDO::FETCH_ASSOC);
-    $userEmail = isset($userEmailRow['email']) ? $userEmailRow['email'] : "";
 
-    if (!empty($userEmail)) {
-        $subject = "Confirmation d'emprunt";
-        $message = "Votre emprunt a été confirmé. Détails de l'emprunt:\n";
-        $message .= "Matériel ID: {$this->materiel_id}\n";
-        $message .= "Date de début: {$this->date_debut}\n";
-        $message .= "Date de fin: {$this->date_fin}\n";
-
-        mail($userEmail, $subject, $message);
-    }
-}
 
 
     private function updateMaterielQuantity($increment) {
