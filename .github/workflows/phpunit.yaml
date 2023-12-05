@@ -30,7 +30,11 @@ jobs:
       run:  docker exec inventaire composer update
 
     - name: Test api
-      run:  docker exec inventaire phpunit .\ApiIntegrationTest.php
+      run: |
+        docker exec inventaire sh -c "curl -sS https://phar.phpunit.de/phpunit.phar -o /usr/local/bin/phpunit"
+        docker exec inventaire chmod +x /usr/local/bin/phpunit
+        docker exec inventaire phpunit .\ApiIntegrationTest.php
+    
     
     - name: Stop docker
       if: always()
