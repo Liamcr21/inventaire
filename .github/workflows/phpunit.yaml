@@ -1,0 +1,42 @@
+name: PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Start docker
+      run: docker compose up -d
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+
+    - name: Install Dependencies
+      run: |
+          docker exec inventaire sh -c "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer"
+          docker exec inventaire composer install -n
+      
+    - name: Update Dependencies
+      run:  docker exec inventaire composer update
+
+    - name: Test api
+      run: |
+        docker exec inventaire vendor/bin/phpunit ApiIntegrationTest.php
+    
+    
+    
+    
+    
+    - name: Stop docker
+      if: always()
+      run: docker-compose down

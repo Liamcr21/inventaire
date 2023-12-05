@@ -1,5 +1,5 @@
 <?php
-require '../php/model/db.php'; // Assurez-vous que le chemin est correct
+require '../php/model/db.php'; 
 require '../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
