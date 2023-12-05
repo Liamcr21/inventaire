@@ -92,7 +92,7 @@
             echo "<tr>";
             echo "<td>{$nom}</td>";
             echo "<td>{$quantite_disponible}</td>";
-            echo "<td>{$nombrePretsEnCours}</td>";
+            // echo "<td>{$nombrePretsEnCours}</td>";
             echo "<td>";
             echo "<a class='btn btn-warning btn-sm mr-2' href='update.php?id={$id}'>Modifier</a>";
 
