@@ -71,7 +71,7 @@
         <tr>
             <th>Nom</th>
             <th>Quantité Disponible</th>
-            <th>Prêt en cours</th>
+            <!-- <th>Prêt en cours</th> -->
             <th>Action</th>
         </tr>
     </thead>
