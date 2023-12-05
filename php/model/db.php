@@ -11,7 +11,7 @@ class Database {
     // private $password = "Rootnws21";
      public $conn;
 
-        private $host = "mysql";
+        private $host = "mysql-1";
     private $db_name = "inventaire";
     private $username = "root";
     private $password = "liamcrbdd";
