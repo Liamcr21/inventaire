@@ -1,3 +1,7 @@
+<?php 
+error_reporting(E_ERROR | E_PARSE);
+
+?>
 <?php
 require_once '../php/model/emprunt.php';
 

@@ -1,4 +1,7 @@
+<?php 
+error_reporting(E_ERROR | E_PARSE);
 
+?>
 
 <!doctype html>
 <html lang="fr">
