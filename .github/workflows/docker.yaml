@@ -21,8 +21,13 @@ jobs:
       - name: Start Docker Compose
         run: docker-compose up -d
 
-      - name: Install Composer Dependencies
-        run: docker exec inventaire composer install
+      - name: Install Dependencies
+        run: |
+            docker exec inventaire sh -c "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer"
+            docker exec inventaire composer install -n
+        
+      - name: Update Dependencies
+        run:  docker exec inventaire composer update
 
       - name: Simulate Navigation
         run: |
