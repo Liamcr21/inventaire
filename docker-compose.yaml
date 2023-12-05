@@ -30,9 +30,9 @@ services:
   mysql:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD : liamcrbdd
+      MYSQL_ROOT_PASSWORD : root
       MYSQL_DATABASE: inventaire
-      MYSQL_PASSWORD: liamcrbdd
+      MYSQL_PASSWORD: root
     ports:
       - "3308:3308"
     networks:
