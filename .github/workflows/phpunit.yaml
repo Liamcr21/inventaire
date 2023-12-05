@@ -22,11 +22,15 @@ jobs:
         php-version: '7.4'
 
     - name: Install Dependencies
-      run: composer install
+      run: |
+        composer install --prefer-dist --no-interaction --no-progress
+
+    - name: Update Dependencies
+      run: composer update
 
     - name: Test api
       run: phpunit .\ApiIntegrationTest.php
     
     - name: Stop docker
       if: always()
-      run: docker-compose down  
+      run: docker-compose down
