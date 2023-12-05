@@ -11,10 +11,10 @@ class Database {
     // private $password = "Rootnws21";
      public $conn;
 
-        private $host = "51.178.27.143";
+        private $host = "localhost";
     private $db_name = "inventaire";
     private $username = "root";
-    private $password = "liamcrbdd";
+    private $password = "root";
 
 
 
