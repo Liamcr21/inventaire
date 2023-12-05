@@ -31,8 +31,8 @@ jobs:
 
     - name: Test api
       run: |
-        docker exec inventaire sh -c "composer require --dev phpunit/phpunit"
-        docker exec inventaire vendor/bin/phpunit .\ApiIntegrationTest.php
+        docker exec inventaire vendor/bin/phpunit ApiIntegrationTest.php
+    
     
     
     
