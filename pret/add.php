@@ -19,21 +19,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emprunt->date_debut = $_POST['date_debut'];
     $emprunt->date_fin = $_POST['date_fin'];
     
-$location = "Location: ../php/traitement/mail2.php?id=";
+// $location = "Location: ../php/traitement/mail2.php?id=";
 
     if ($emprunt->createAndUpdateMateriel()) {
       $query = "SELECT * FROM empreints ORDER BY id DESC";
       $stmt = $db->prepare($query);
       $stmt->execute();
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      header($location.$row['id']);
+      // header($location.$row['id']);
 
     } else {
       $query = "SELECT * FROM empreints ORDER BY id  DESC";
       $stmt = $db->prepare($query);
       $stmt->execute();
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        header($location.$row['id']);
+        // header($location.$row['id']);
     }
 }
 ?>
