@@ -1,0 +1,43 @@
+name: Docker deployement
+
+on:
+  pull_request:
+    branches:
+      - main 
+      
+permissions:
+  contents: write
+  pull-requests: write
+      
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
+      - name: Install Composer Dependencies
+        run: docker exec inventaire composer install
+
+      - name: Simulate Navigation
+        run: |
+          curl --fail http://localhost:8888/ || exit 1
+
+      - name: Stop Docker Compose
+        if: always()
+        run: docker-compose down
+
+#   automerge:
+#     needs: deploy
+#     runs-on: ubuntu-latest
+#     # if: (needs.deploy.result == 'success') && contains(github.event.pull_request.labels.*.name, 'automerge')    
+#     steps:
+#       - name: Automerge
+#         uses: "pascalgn/automerge-action@v0.15.6"
+#         env:
+#           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
