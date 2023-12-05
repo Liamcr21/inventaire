@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inventaire
+    container_name: inventaire
+    working_dir: /var/www/html  
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - mynetwork
+    depends_on:
+      - mysql
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - mynetwork
+    depends_on:
+      - php
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD : liamcrbdd
+      MYSQL_DATABASE: inventaire
+      MYSQL_PASSWORD: liamcrbdd
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+    hostname: 145.14.153.151
+
+
+networks:
+  mynetwork:
