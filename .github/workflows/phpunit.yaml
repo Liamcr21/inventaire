@@ -26,10 +26,10 @@ jobs:
         docker exec inventaire composer install --prefer-dist --no-interaction --no-progress
 
     - name: Update Dependencies
-      run: composer update
+      run:  docker exec inventaire composer update
 
     - name: Test api
-      run: phpunit .\ApiIntegrationTest.php
+      run:  docker exec inventaire phpunit .\ApiIntegrationTest.php
     
     - name: Stop docker
       if: always()
