@@ -1,0 +1,32 @@
+name: PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Start docker
+      run: docker compose up -d
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - name: Install Dependencies
+      run: composer install
+
+    - name: Test api
+      run: phpunit .\ApiIntegrationTest.php
+    
+    - name: Stop docker
+      if: always()
+      run: docker-compose down  
