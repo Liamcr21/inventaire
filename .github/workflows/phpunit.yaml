@@ -23,7 +23,7 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        composer install --prefer-dist --no-interaction --no-progress
+        docker exec inventaire composer install --prefer-dist --no-interaction --no-progress
 
     - name: Update Dependencies
       run: composer update
