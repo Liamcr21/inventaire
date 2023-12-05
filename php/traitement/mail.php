@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     $emprunt = new Emprunt($db);
     $emprunt->id = $empruntId;
     $emprunt->readOne();
+    
 
     if ($emprunt->user_id) {
         $userQuery = "SELECT nom, email FROM users WHERE id = :user_id";
@@ -44,22 +45,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     $message .= "Date de fin: {$emprunt->date_fin}\n\n";
     $message .= "Cordialement,\nNWS";
 
-    // Envoyez l'e-mail
     $subject = "Détails de l'emprunt en cours";
     $headers = "From: inventaire@nws.fr"; 
 
     if (mail($to, $subject, $message, $headers)) {
         echo "E-mail envoyé avec succès.";
-        header("Location: ../../pret/list.php");
-        exit();
+
     } else {
         echo "Erreur lors de l'envoi de l'e-mail.";
-        header("Location: ../../pret/list.php");
-        exit();
+
     }
 } else {
     echo "Erreur : ID d'emprunt non spécifié.";
-    header("Location: ../../pret/list.php");
-    exit();
+
 }
 ?>

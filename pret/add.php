@@ -10,19 +10,26 @@ $db = $database->getConnection();
 $emprunt = new Emprunt($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupérer les données du formulaire
     $emprunt->user_id = $_POST['user_id'];
     $emprunt->materiel_id = $_POST['materiel_id'];
     $emprunt->date_debut = $_POST['date_debut'];
     $emprunt->date_fin = $_POST['date_fin'];
+    
+$location = "Location: ../php/traitement/mail2.php?id=";
 
     if ($emprunt->createAndUpdateMateriel()) {
-        header("Location: ../php/traitement/mail2.php?id=={$emprunt->id}");
-        exit();
+      $query = "SELECT * FROM empreints ORDER BY id DESC";
+      $stmt = $db->prepare($query);
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      header($location.$row['id']);
+
     } else {
-        echo "L'emprunt a été créé avec succès et la quantité de matériel a été mise à jour.";
-        header("Location: ../php/traitement/mail2.php?id=={$emprunt->id}");
-        exit();
+      $query = "SELECT * FROM empreints ORDER BY id  DESC";
+      $stmt = $db->prepare($query);
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        header($location.$row['id']);
     }
 }
 ?>
@@ -95,18 +102,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="post" action="">
 
-        <div class="form-group">
+      <div class="form-group">
     <label for="user_id">Utilisateur:</label>
     <select class="form-control" name="user_id" required>
         <?php
         $database = new Database();
         $db = $database->getConnection();
         $user = new User($db);
-        $stmt = $user->read();
+        $students = $user->read();
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            echo "<option value='{$id}'>{$nom}</option>";
+        if (!empty($students)) {
+            foreach ($students as $student) {
+                echo "<option value='{$student['id']}'>{$student['nom']} {$student['prenom']}</option>";
+            }
+        } else {
+            echo "<option value=''>Aucun étudiant trouvé</option>";
         }
         ?>
     </select>

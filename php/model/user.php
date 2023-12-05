@@ -34,16 +34,26 @@ class User {
         return false;
     }
 
-    // Fonction pour récupérer tous les utilisateurs
-    function read() {
-        $query = "SELECT id, nom,email, role FROM " . $this->table_name;
+public function read() {
+        $query = "SELECT student_id FROM student_ids";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
+        $studentIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        return $stmt;
+        if (!empty($studentIds)) {
+            $apiUrl = "http://vps-a47222b1.vps.ovh.net:4242/student?ids=" . implode(',', $studentIds);
+
+            $apiResponse = file_get_contents($apiUrl);
+            $students = json_decode($apiResponse, true);
+
+            return $students ?: [];
+        } else {
+            return [];
+        }
     }
 
-    // Fonction pour récupérer un seul utilisateur par ID
+
+
     function readOne() {
         $query = "SELECT id, nom,email, role FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
@@ -57,7 +67,6 @@ class User {
         $this->role = $row['role'];
     }
 
-    // Fonction pour mettre à jour un utilisateur
     function update() {
         $query = "UPDATE " . $this->table_name . " SET nom=:nom,email=:email, role=:role WHERE id = :id";
 
@@ -80,7 +89,6 @@ class User {
         return false;
     }
 
-    // Fonction pour supprimer un utilisateur
     function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
         $stmt = $this->conn->prepare($query);

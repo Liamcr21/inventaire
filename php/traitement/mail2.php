@@ -44,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     $message .= "Date de fin: {$emprunt->date_fin}\n\n";
     $message .= "Cordialement,\nNWS";
 
-    // Envoyez l'e-mail
     $subject = "Confirmation emprunt en cours";
     $headers = "From: inventaire@nws.fr"; 
 

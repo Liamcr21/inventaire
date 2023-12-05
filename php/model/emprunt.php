@@ -113,6 +113,30 @@ private function isMaterielAvailable() {
 
         return $stmt;
     }
+    
+
+
+    
+    
+public function readAllUsers() {
+    $apiUrl = "http://vps-a47222b1.vps.ovh.net:4242/student";
+    $apiResponse = file_get_contents($apiUrl);
+    $userList = json_decode($apiResponse, true);
+
+    return $userList;
+}
+
+    
+public function readSingleUser($userList, $user_id) {
+    foreach ($userList as $user) {
+        if ($user['id'] == $user_id) {
+            return $user;
+        }
+    }
+
+    return false; 
+}
+
 
 
 function delete() {

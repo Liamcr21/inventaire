@@ -81,11 +81,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       <div id="content" class="p-4 p-md-5 pt-5">
 
-        <h2 class="mb-4">Ajouter un matériel</h2>
+        <h2 class="mb-4">Ajouter un user</h2>
 
         <form action="" method="post">
         <div class="form-group">
-            <label for="nom">Nom du matériel:</label>
+            <label for="nom">Nom :</label>
             <input type="text" class="form-control" id="nom" name="nom" required>
         </div>
 

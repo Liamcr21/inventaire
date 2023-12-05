@@ -1,3 +1,7 @@
+<?php error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+
 <!doctype html>
 <html lang="fr">
   <head>
@@ -73,75 +77,101 @@
         </tr>
     </thead>
     <tbody>
-        <?php
-            require_once '../php/model/emprunt.php';
-            require_once '../php/model/db.php';
+<?php
+require_once '../php/model/emprunt.php';
+require_once '../php/model/db.php';
+require_once '../php/model/user.php';
 
-            $database = new Database();
-            $db = $database->getConnection();
-            $emprunt = new Emprunt($db);
-            $stmt = $emprunt->read();
+$database = new Database();
+$db = $database->getConnection();
+$emprunt = new Emprunt($db);
+$user = new User($db);
 
-            if ($stmt->rowCount() > 0) {
-              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                extract($row);
-            
-                $userQuery = "SELECT nom FROM users WHERE id = :user_id";
-                $userStmt = $db->prepare($userQuery);
-                $userStmt->bindParam(":user_id", $user_id);
-                if ($userStmt->execute()) {
-                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-                    $nomUtilisateur = isset($userRow['nom']) ? $userRow['nom'] : "Utilisateur inconnu";
-                } else {
-                    $nomUtilisateur = "Erreur lors de la récupération du nom de l'utilisateur";
-                }
-            
-                $materielQuery = "SELECT nom FROM materiels WHERE id = :materiel_id";
-                $materielStmt = $db->prepare($materielQuery);
-                $materielStmt->bindParam(":materiel_id", $materiel_id);
-                if ($materielStmt->execute()) {
-                    $materielRow = $materielStmt->fetch(PDO::FETCH_ASSOC);
-                    $nomMateriel = isset($materielRow['nom']) ? $materielRow['nom'] : "Matériel inconnu";
-                } else {
-                    $nomMateriel = "Erreur lors de la récupération du nom du matériel";
-                }
-            
-                echo "<tr>";
-                echo "<td>{$nomUtilisateur}</td>";
-                echo "<td>{$nomMateriel}</td>";
-$date_debut_formattee = date('d/m/Y ', strtotime($date_debut));
-echo "<td>{$date_debut_formattee}</td>";
+$stmt = $emprunt->read();
 
-$date_fin_formattee = date('d/m/Y ', strtotime($date_fin));
-echo "<td>{$date_fin_formattee}</td>";
-                echo "<td>";
+if ($stmt->rowCount() > 0) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        extract($row);
+        
+// 
+/*
+$userQuery = "SELECT user_id FROM empreints WHERE id = :user_id";
+$userStmt = $db->prepare($userQuery);
+$userStmt->bindParam(":user_id", $user_id);
+var_dump($user_id);
+if ($userStmt->execute()) {
+    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+    $nomUtilisateur = isset($userRow['nom']) ? $userRow['nom'] : "Utilisateur inconnu";
+} else {
+    $nomUtilisateur = "Erreur lors de la récupération du nom de l'utilisateur";
+}
+*/
 
-                $dateDebutTimestamp = strtotime($date_debut);
-                $dateFinTimestamp = strtotime($date_fin);
-                $todayTimestamp = strtotime(date('Y-m-d'));
-            
-                if ($todayTimestamp >= $dateDebutTimestamp && $todayTimestamp <= $dateFinTimestamp) {
-                    echo "En cours";
-                } elseif ($todayTimestamp > $dateFinTimestamp) {
-                    echo "Retard";
-                } else {
-                    echo "Pas commencé"; 
-                }
-            
-                echo "</td>";
-                echo "<td>";
-                echo "<a href='../php/traitement/mail.php?id={$id}' class='btn btn-info btn-sm ml-2'>Rappel</a>";
-                echo "</td>";
-                echo "<td>";
-                echo "<a href='delete.php?id={$id}' class='btn btn-danger btn-sm ml-2'>Cloturer</a>";
-                echo "</td>";
-                echo "</tr>";
-            }
-            
-            } else {
-                echo "<tr><td colspan='5'>Aucun emprunt trouvé.</td></tr>";
-            }
-        ?>
+// Utilisez directement $user_id
+$userList = $emprunt->readAllUsers();
+
+$userDetails = $emprunt->readSingleUser($userList, $user_id);
+
+
+
+        $materielQuery = "SELECT nom FROM materiels WHERE id = :materiel_id";
+        $materielStmt = $db->prepare($materielQuery);
+        $materielStmt->bindParam(":materiel_id", $materiel_id);
+        if ($materielStmt->execute()) {
+            $materielRow = $materielStmt->fetch(PDO::FETCH_ASSOC);
+            $nomMateriel = isset($materielRow['nom']) ? $materielRow['nom'] : "Matériel inconnu";
+        } else {
+            $nomMateriel = "Erreur lors de la récupération du nom du matériel";
+            echo "Erreur lors de la récupération du nom du matériel.";
+        }
+
+        echo "<tr>";
+  echo "<td>{$userDetails['nom']} {$userDetails['prenom']}</td>";
+
+        echo "<td>{$nomMateriel}</td>";
+      
+
+        $date_debut_formattee = date('d/m/Y ', strtotime($date_debut));
+        echo "<td>{$date_debut_formattee}</td>";
+
+        $date_fin_formattee = date('d/m/Y ', strtotime($date_fin));
+        echo "<td>{$date_fin_formattee}</td>";
+        echo "<td>";
+
+
+        $dateDebutTimestamp = strtotime($date_debut);
+        $dateFinTimestamp = strtotime($date_fin);
+        $todayTimestamp = strtotime(date('Y-m-d'));
+
+        if ($todayTimestamp >= $dateDebutTimestamp && $todayTimestamp <= $dateFinTimestamp) {
+            echo "En cours";
+        } elseif ($todayTimestamp > $dateFinTimestamp) {
+            echo "Retard";
+        } else {
+            echo "Pas commencé";
+        }
+
+        echo "</td>";
+        echo "<td>";
+        echo "<a href='../php/traitement/mail.php?id={$id}' class='btn btn-info btn-sm ml-2'>Rappel</a>";
+        echo "</td>";
+        echo "<td>";
+        echo "<a href='delete.php?id={$id}' class='btn btn-danger btn-sm ml-2'>Cloturer</a>";
+        echo "</td>";
+        echo "</tr>";
+        
+
+
+
+
+
+    }
+} else {
+    echo "<tr><td colspan='5'>Aucun emprunt trouvé.</td></tr>";
+}
+?>
+
+
     </tbody>
 </table>
 

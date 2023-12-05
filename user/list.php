@@ -65,46 +65,47 @@
 
         <h2 class="mb-4">Listes des étudiants</h2>
 
-        <a class='btn btn-primary' style="margin-bottom: 2%;" href='add.php'>Ajouter un étudiant</a>
+        <!-- <a class='btn btn-primary' style="margin-bottom: 2%;" href='add.php'>Ajouter un étudiant</a> -->
 
 <table class="table">
     <thead>
         <tr>
             <th>Nom</th>
             <th>Email</th>
-            <th>Role</th>
+            <th>email</th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        <?php
-    include_once '../php/model/db.php';
-    include_once '../php/model/user.php';
+<?php
+include_once '../php/model/db.php';
+include_once '../php/model/user.php';
 
-        $database = new Database();
-        $db = $database->getConnection();
-        $user = new User($db);
-        $stmt = $user->read();
+$database = new Database();
+$db = $database->getConnection();
+$user = new User($db);
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-          
-            extract($row);
-            echo "<tr>";
-            echo "<td>{$nom}</td>";
-            echo "<td>{$email}</td>";
-            echo "<td>{$role}</td>";
-            echo "<td>";
-            echo "<a class='btn btn-warning btn-sm mr-2' href='update.php?id={$id}'>Modifier</a>";
+$students = $user->read();
 
-            echo "<form method='post' action='delete.php' style='display:inline;'>";
-            echo "   <input type='hidden' name='id' value='{$id}'>";
-            echo "   <button type='submit' class='btn btn-danger btn-sm'>Supprimer</button>";
-            echo "</form>";
-            echo "<a class='btn btn-info btn-sm ml-2' href='details.php?id={$id}'>Voir prêts</a>";
-            echo "</td>";
-            echo "</tr>";
-        }
-        ?>
+if (!empty($students)) {
+
+
+    foreach ($students as $student) {
+        echo "<tr>";
+        echo "<td>{$student['nom']}</td>";
+        echo "<td>{$student['prenom']}</td>";
+        echo "<td>{$student['mail']}</td>";
+        echo "<td><a class='btn btn-info btn-sm ml-2' href='details.php?id={$student['id']}'>Voir prêts</a></td>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
+} else {
+    echo "<p>Aucun étudiant trouvé.</p>";
+}
+?>
+
+
+
     </tbody>
 </table>
       </div>
