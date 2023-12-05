@@ -26,11 +26,11 @@ error_reporting(E_ERROR | E_PARSE);
 	        </button>
         </div>
 				<div class="p-4 pt-5">
-		  		<h1><a href="../index.php" class="logo"><img src="../assets/images/nws-logo.png" width="50%"></a></h1>
+		  		<h1><a href="../" class="logo"><img src="../assets/images/nws-logo.png" width="50%"></a></h1>
 	        <ul class="list-unstyled components mb-5">
 	   
 	          <li>
-	              <a href="../index.php">Accueil</a>
+	              <a href="../">Accueil</a>
 	          </li>
 	          <li>
               <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Empreint</a>
