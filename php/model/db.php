@@ -9,7 +9,7 @@ class Database {
     // private $db_name = "u801021231_inventaire";
     // private $username = "u801021231_inventaire";
     // private $password = "Rootnws21";
-    //  public $conn;
+     public $conn;
 
         private $host = "localhost";
     private $db_name = "inventaire";
