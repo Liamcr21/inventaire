@@ -1,7 +1,7 @@
 <?php
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["mail"])) {
-    $empruntId = $_GET["mail"];
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
+    $empruntId = $_GET["id"];
 
     require_once '../model/emprunt.php';
     require_once '../model/db.php';
@@ -13,11 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["mail"])) {
     $emprunt->readOne();
     
 
-    $userList = $emprunt->readAllUsers();
-
-    $userDetails = $emprunt->readSingleUser($userList, $user_id);
-    
-    $to = $empruntId ;
+ $to = 'cariou.liam@orange.fr';
 
     if ($emprunt->materiel_id) {
         $materielQuery = "SELECT nom FROM materiels WHERE id = :materiel_id";
