@@ -12,19 +12,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     $emprunt->id = $empruntId;
     $emprunt->readOne();
 
-    if ($emprunt->user_id) {
-        $userQuery = "SELECT nom, email FROM users WHERE id = :user_id";
-        $userStmt = $db->prepare($userQuery);
-        $userStmt->bindParam(":user_id", $emprunt->user_id);
-        $userStmt->execute();
-        $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
 
-        $nomUtilisateur = isset($userRow['nom']) ? $userRow['nom'] : "Utilisateur inconnu";
-        $to = isset($userRow['email']) ? $userRow['email'] : "cariou.liam@orange.fr";
-    } else {
-        $nomUtilisateur = "Utilisateur inconnu";
-        $to = "cariou.liam@orange.fr";
-    }
+    $userList = $emprunt->readAllUsers();
+
+$userDetails = $emprunt->readSingleUser($userList, $user_id);
+
+ $to = isset($userDetails['mail']) ? $userDetails['mail'] : '';
+
+    
 
     if ($emprunt->materiel_id) {
         $materielQuery = "SELECT nom FROM materiels WHERE id = :materiel_id";
@@ -38,13 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     }
 
     $message = "Bonjour $nomUtilisateur,\n\n";
-    $message .= "Confirmation emprunt en cours avec les détails suivants :\n\n";
+    $message .= "Emprunt en cours avec les détails suivants :\n\n";
     $message .= "Nom du matériel: $nomMateriel\n";
     $message .= "Date de début: {$emprunt->date_debut}\n";
     $message .= "Date de fin: {$emprunt->date_fin}\n\n";
     $message .= "Cordialement,\nNWS";
 
-    $subject = "Confirmation emprunt en cours";
+    $subject = "Emprunt en cours";
     $headers = "From: inventaire@nws.fr"; 
 
     if (mail($to, $subject, $message, $headers)) {
