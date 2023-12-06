@@ -61,7 +61,7 @@
 
       <div id="content" class="p-4 p-md-5 pt-5">
 
-        <h2 class="mb-4">Bienvenue sur la plateforme d'inventaire de la Normandie Web School</h2>
+        <h2 class="mb-4">Bienvenue sur la plateforme d'inventaire de la Normandie Web School !</h2>
 
         <div class="container">
             <div class="row">
