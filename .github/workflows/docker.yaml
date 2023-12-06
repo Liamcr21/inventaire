@@ -1,4 +1,4 @@
-name: Docker deployement
+name: CD ( test docker )
 
 on:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
       - name: Update Dependencies
         run:  docker exec inventaire composer update
 
-      - name: Simulate Navigation
+      - name: Simulate Navigation ( test url docker ) 
         run: |
           curl --fail http://localhost:8888/ || exit 1
 
@@ -37,12 +37,3 @@ jobs:
         if: always()
         run: docker-compose down
 
-#   automerge:
-#     needs: deploy
-#     runs-on: ubuntu-latest
-#     # if: (needs.deploy.result == 'success') && contains(github.event.pull_request.labels.*.name, 'automerge')    
-#     steps:
-#       - name: Automerge
-#         uses: "pascalgn/automerge-action@v0.15.6"
-#         env:
-#           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

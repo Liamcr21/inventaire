@@ -72,7 +72,6 @@ error_reporting(E_ERROR | E_PARSE);
             <th>Nom Matériel</th>
             <th>Date de début</th>
             <th>Date de fin</th>
-            <th>Situation</th>
             <th>Rappel</th>
             <th></th>
         </tr>
