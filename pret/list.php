@@ -154,7 +154,7 @@ $userDetails = $emprunt->readSingleUser($userList, $user_id);
 
         echo "</td>";
         echo "<td>";
-        echo "<a href='../php/traitement/mail2.php?id={$id}' class='btn btn-info btn-sm ml-2'>Rappel</a>";
+        // echo "<a href='../php/traitement/mail2.php?id={$id}' class='btn btn-info btn-sm ml-2'>Rappel</a>";
         echo "</td>";
         echo "<td>";
         echo "<a href='delete.php?id={$id}' class='btn btn-danger btn-sm ml-2'>Cloturer</a>";
